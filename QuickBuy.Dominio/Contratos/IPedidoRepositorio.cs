@@ -5,7 +5,7 @@ using System.Text;
 
 namespace QuickBuy.Dominio.Contratos
 {
-    public interface IPedidoRepositorio : IBaseRepositorio<Usuario>
+    public interface IPedidoRepositorio : IBaseRepositorio<Pedido>
     {
     }
 }
