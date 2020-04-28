@@ -21,7 +21,7 @@
       </div>
     </div>
     <label for="inputSenha" class="sr-only">Senha</label>
-    <input type="email" id="inputSenha" name="senha" placeholder="Senha" class="form-control mb-2"
+    <input type="password" id="inputSenha" name="senha" placeholder="Senha" class="form-control mb-2"
            [(ngModel)]="usuario.senha"
            [ngClass]="{
               'is-invalid' : senha.invalid && (senha.dirty || senha.touched),
@@ -34,7 +34,13 @@
         Senha é de preenchimento obrigatório!
       </div>
     </div>
-    <button class="btn btn-primary btn-block" type="button" (click)="entrar()">Entrar</button>
+    <button class="btn btn-primary btn-block mb-3" type="button" (click)="entrar()" [disabled]="ativar_spinner">
+      <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" *ngIf="ativar_spinner"></span>
+      Entrar
+    </button>
+    <div class="alert alert-danger" *ngIf="mensagem">
+      {{mensagem}}
+    </div>
   </form>
 
 </div>
