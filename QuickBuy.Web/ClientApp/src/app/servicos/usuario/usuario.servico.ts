@@ -13,12 +13,15 @@ export class UsuarioServico {
 
   set usuario(usuario: Usuario) {
     sessionStorage.setItem("usuario-autenticado", JSON.stringify(usuario));
+    console.log('Usuario autenticado - set: ' + usuario);
+    console.log('Usuario autenticado - set JSON: ' + JSON.stringify(usuario));
     this._usuario = usuario;
   }
 
   get usuario(): Usuario {
     let usuario_json = JSON.parse(sessionStorage.getItem("usuario-autenticado"));
-    this._usuario = JSON.parse(usuario_json);
+    console.log('Usuario autenticado - get: ' + usuario_json);
+    this._usuario = usuario_json;
     return this._usuario;
   }
 
@@ -27,8 +30,12 @@ export class UsuarioServico {
   }
 
   public limpar_sessao() {
-    sessionStorage.set("usuario-autenticado", "");
+    sessionStorage.setItem("usuario-autenticado", "");
     this._usuario = null;
+  }
+
+  get headers(): HttpHeaders {
+    return new HttpHeaders().set('content-type', 'application/json');
   }
 
   constructor(private http: HttpClient, @Inject("BASE_URL") baseUrl: string ) {
@@ -36,22 +43,14 @@ export class UsuarioServico {
   }
 
   public verificarUsuario(usuario: Usuario): Observable<Usuario> {
-    const headers = new HttpHeaders().set('content-type', 'application/json');
     var body = {
       email: usuario.email,
       senha: usuario.senha
     }
-    return this.http.post<Usuario>(this.baseUrl + "api/usuario/VerificarUsuario", body, { headers });
+    return this.http.post<Usuario>(this.baseUrl + "api/usuario/VerificarUsuario", body, { headers: this.headers });
   }
 
   public cadastrarUsuario(usuario: Usuario): Observable<Usuario> {
-    const headers = new HttpHeaders().set('content-type', 'application/json');
-    var body = {
-      email: usuario.email,
-      senha: usuario.senha,
-      nome: usuario.nome,
-      sobreNome: usuario.sobreNome
-    }
-    return this.http.post<Usuario>(this.baseUrl + "api/usuario", body, { headers });
+    return this.http.post<Usuario>(this.baseUrl + "api/usuario", JSON.stringify(usuario), { headers: this.headers });
   }
 }

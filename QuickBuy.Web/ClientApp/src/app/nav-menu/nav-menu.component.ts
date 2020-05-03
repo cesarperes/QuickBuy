@@ -14,6 +14,10 @@ export class NavMenuComponent {
 
   }
 
+  get usuario() {
+    return this.usuarioServico.usuario;
+  }
+
   collapse() {
     this.isExpanded = true;
   }
